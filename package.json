@@ -1,0 +1,19 @@
+{
+  "name": "phonebuk",
+  "version": "1.0.0",
+  "description": "Ring, ring.  Pick up the phone, bby.",
+  "main": "phonebook.js",
+  "scripts": {
+    "start": "node phonebook.js",
+    "dev": "nodemon phonebook.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lishenga",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
