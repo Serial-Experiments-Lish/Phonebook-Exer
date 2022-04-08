@@ -1,7 +1,18 @@
 const http = require('http');
 const express = require('express');
 const press = express();
+const morgan = require('morgan');
 
+morgan(function (tokens, request, response) {
+    return [
+        tokens.method(request, response), 
+        tokens.url(request, response), 
+        tokens.status(request, response), 
+        tokens.res(request, response, 'content-length'), '-', 
+        tokens['response-time'](request, response), 'ms'
+    ].join(' ')
+})
+//I couldn't get the res[content-length] to show up.
 let persons = [
     { 
       "id": 1,
@@ -31,6 +42,7 @@ const app = http.createServer((request, response) => {
 });
 
 press.use(express.json());
+press.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 
 press.set('json spaces', 40);
 
@@ -95,7 +107,15 @@ const generateId = () => {
     persons = persons.concat(person)
   
     response.json(person)
+
+    console.log(JSON.stringify(morgan('tiny')));
   })
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+
+press.use(unknownEndpoint)
 
 const PORT = 3001
 press.listen(PORT)
